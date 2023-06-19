@@ -19,6 +19,8 @@ Hint: To easily add all protections use the RCON command: `oxide.grant {user <us
 
 - **/critknifespawn** -- Spawn in a Crit Knife to your inventory. ***(requires `critknife.spawn` permission)***
 
+## Localization
+
 ## Configuration
 
 ```json
