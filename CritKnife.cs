@@ -1,11 +1,12 @@
-﻿using System;
+using System;
 using Oxide.Core.Plugins;
 using UnityEngine;
 using Rust;
+using System.Collections.Generic;
 
 namespace Oxide.Plugins
 {
-    [Info("CritKnife", "somemando", "1.0.0")]
+    [Info("Crit Knife", "somemando", "1.0.1")]
     [Description("This plugin allows creation of weapon that does a critical hit on scientists. Those with permissions can spawn the weapon, to sell in a shop or put in a customize vending machine.")]
     
     public class CritKnife : RustPlugin
@@ -20,7 +21,6 @@ namespace Oxide.Plugins
 
         int weaponId = 2040726127;
         ulong skinId = 2943601828;
-        string knifeName = "Critical Knife of Goldness";
 
         //Effects
       
@@ -52,16 +52,28 @@ namespace Oxide.Plugins
             Puts($"Plugin '{name}' has been loaded at {DateTime.Now.ToString()}");
         }
 
+        protected override void LoadDefaultMessages()
+        {
+            lang.RegisterMessages(new Dictionary<string, string>
+            {
+                ["NoSpawnPermission"] = "<color=red>You don't have permission to spawn a crit knife.</color>",
+                ["KnifeName"] = "Critical Knife of Goldness"
+            }, this);
+        }
+
+        private string GetLang(string langKey, string playerId = null, params object[] args)
+        {
+            return string.Format(lang.GetMessage(langKey, this, playerId), args);
+        }
 
         // We detect if this is a scientist hit by a player with the right item and skin. The skin is only for the combat knife right now but this can change maybe?
         // If all that is the case, and if enabled, we then boost the damage and add effects.
-           
+
         void OnEntityTakeDamage(BaseCombatEntity entity, HitInfo hitInfo)
         {
             var attacker = hitInfo?.Initiator as BasePlayer;
             if (attacker == null)
             {
-                //Puts("No attacker");
                 return;
             }
 
@@ -134,8 +146,7 @@ namespace Oxide.Plugins
             if  (player.IPlayer.HasPermission(SpawnPermission)) 
             {
                 var knife = ItemManager.CreateByItemID(weaponId, 1);
-                knife.name = knifeName;
-                knife.info.displayName.english = knifeName;
+                knife.name = lang.GetMessage("KnifeName", this, player.UserIDString);
                 knife.skin = skinId;
                 var ent = knife.GetHeldEntity();
                 ent.skinID = skinId;
