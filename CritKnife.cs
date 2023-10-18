@@ -188,8 +188,6 @@ namespace Oxide.Plugins
 
     public class PluginConfig
     {
-        public float critChance;
-        public int damageMultiplier;
         public int maxCondition;
         public int initialCondition;
         public bool screamingEnabled;
