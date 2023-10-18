@@ -6,9 +6,9 @@ using System.Collections.Generic;
 
 namespace Oxide.Plugins
 {
-    [Info("Crit Knife", "somemando", "1.0.2")]
+    [Info("Crit Knife", "somemando", "1.0.3")]
     [Description("This plugin allows creation of weapon that does a critical hit on scientists. Those with permissions can spawn the weapon, to sell in a shop or put in a customize vending machine.")]
-    
+
     public class CritKnife : RustPlugin
     {
         //Weapon properties        
@@ -21,7 +21,7 @@ namespace Oxide.Plugins
         ulong skinId = 2943601828;
 
         //Effects
-      
+
         string bloodEffectHead = "assets/bundled/prefabs/fx/player/bloodspurt_wounded_head.prefab";
         string bloodEffectGut = "assets/bundled/prefabs/fx/player/bloodspurt_wounded_stomache.prefab";
         string scream = "assets/bundled/prefabs/fx/player/gutshot_scream.prefab";
@@ -39,8 +39,6 @@ namespace Oxide.Plugins
 
             screamingEnabled = config.screamingEnabled;
             bloodEnabled = config.bloodEnabled;
-            critChance = config.critChance;
-            damageMultiplier = config.damageMultiplier;
             maxCondition = config.maxCondition;
             initialCondition = config.initialCondition;
         }
@@ -85,10 +83,10 @@ namespace Oxide.Plugins
             {
                 return;
             }
-            
-            if (!entity.PrefabName.Contains("scientist")) 
+
+            if (!entity.PrefabName.Contains("scientist"))
             {
-                return; 
+                return;
             }
 
             var weapon = hitInfo.Weapon?.GetItem();
@@ -105,7 +103,7 @@ namespace Oxide.Plugins
             {
                 return;
             }
-            
+
             hitInfo.damageTypes.Add(DamageType.ElectricShock, 10000f);
             HitInfo impact = new HitInfo()
             {
@@ -132,11 +130,11 @@ namespace Oxide.Plugins
             entity.SendNetworkUpdateImmediate();
 
         }
-                
+
         [ChatCommand("critknifespawn")]
         void cmdSpawnCritKnife(BasePlayer player, string command, string[] args)
         {
-            if  (player.IPlayer.HasPermission(SpawnPermission)) 
+            if (player.IPlayer.HasPermission(SpawnPermission))
             {
                 var knife = ItemManager.CreateByItemID(weaponId, 1);
                 knife.name = lang.GetMessage("KnifeName", this, player.UserIDString);
@@ -148,7 +146,8 @@ namespace Oxide.Plugins
                 knife.MarkDirty();
                 player.inventory.GiveItem(knife);
 
-            } else
+            }
+            else
             {
                 SendReply(player, "<color=red>You don't have permission to spawn a crit knife.</color>");
             }
@@ -175,8 +174,6 @@ namespace Oxide.Plugins
         {
             return new PluginConfig
             {
-                critChance = 1.0f,
-                damageMultiplier = 10000,
                 maxCondition = 500,
                 initialCondition = 500,
                 screamingEnabled = true,
