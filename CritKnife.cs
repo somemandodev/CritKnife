@@ -6,14 +6,12 @@ using System.Collections.Generic;
 
 namespace Oxide.Plugins
 {
-    [Info("Crit Knife", "somemando", "1.0.1")]
+    [Info("Crit Knife", "somemando", "1.0.2")]
     [Description("This plugin allows creation of weapon that does a critical hit on scientists. Those with permissions can spawn the weapon, to sell in a shop or put in a customize vending machine.")]
     
     public class CritKnife : RustPlugin
     {
-        //Weapon properties
-        float critChance;
-        int damageMultiplier;
+        //Weapon properties        
         int maxCondition;
         int initialCondition;
         bool bloodEnabled;
@@ -45,11 +43,6 @@ namespace Oxide.Plugins
             damageMultiplier = config.damageMultiplier;
             maxCondition = config.maxCondition;
             initialCondition = config.initialCondition;
-        }
-
-        void OnPluginLoaded(Plugin name)
-        {
-            Puts($"Plugin '{name}' has been loaded at {DateTime.Now.ToString()}");
         }
 
         protected override void LoadDefaultMessages()
