@@ -26,8 +26,6 @@ Hint: To easily add all protections use the RCON command: `oxide.grant {user <us
 ```json
 {
   "bloodEnabled": true,
-  "critChance": 1.0,
-  "damageMultiplier": 10000,
   "initialCondition": 500,
   "maxCondition": 500,
   "screamingEnabled": true
